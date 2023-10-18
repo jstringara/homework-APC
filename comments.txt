@@ -1,0 +1,6 @@
+With the for loop code seems to run slower now but for some reason boundary clipping
+seems to lead to a sensible solution.
+I dunno why the speed decrease occured, perhaps creating the variables is slowing the pc down
+opposed to creating them just once and updating them.
+Funnily enough ignoring the boundaries leads to a more accurate solution in less time,
+go figure!

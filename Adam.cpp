@@ -144,56 +144,39 @@ const std::vector<double> & Adam::get_sup_limits() const {
 
 Point Adam::solve(const Point &initial_parameters) {
 
-    const size_t N = initial_parameters.get_dimension(); // retrieve number of parameters
-    size_t t=0; // time index
-    Point theta (initial_parameters.get_coordinates()); // theta, point holding parameter info
-    // previous observations of theta (theta_0 = initial_parameters)
-    Point thetaPrev;
-    // estimate of moments (two vectors of N elements), more memory efficient than Points
-    std::vector<double> mt(N, 0), vt(N, 0);
-    // ith component of gradient and corrected moments
-    double gt, mHat, vHat, change;
-    // variable to hold batch indexes
-    std::vector<int> batch;
-    // booleans to check convergence
-    double thetaDistance, fDistance;
-    bool thetaDistanceSignificant, fDistanceSignificant, maxIterationsUnreached;
+    Point theta(initial_parameters.get_coordinates());
+    bool converged = false; // this might need better initialization
+    // initialize moments as zeros
+    std::vector<double> mt(theta.get_dimension(), 0), vt(theta.get_dimension(), 0);
 
-    do {
-        // update time index, previous observations and extract batch
-        ++t;
-        thetaPrev.set_coordinates(theta.get_coordinates());
-        batch = create_batch();
-
-        // element-wise updating of theta
-        for (size_t i=0; i<N; ++i) {
-            // evaluate gradient component and update moments
-            gt = evaluate_partial_derivative_batch(i, thetaPrev, batch);
+    for (size_t t=0; t < max_iterations && !converged; t++) { // loop of iterations
+        // save old theta to compute distance later
+        Point thetaPrev(theta.get_coordinates());
+        // extract the batch
+        std::vector<int> batch = create_batch();
+        for (size_t i=0; i<theta.get_dimension(); i++) { // loop of components of theta
+            // update the gradient components and moments
+            const double gt = evaluate_partial_derivative_batch(i, theta, batch);
             mt[i] = gamma1 * mt[i] + (1-gamma1) * gt;
-            vt[i] = gamma2 * vt[i] + (1-gamma2) * pow(gt, 2);
-            mHat = mt[i] / (1-pow(gamma1, t));
-            vHat = vt[i] / (1-pow(gamma2, t));
-            change = alpha * mHat / (sqrt(vHat) + epsilon);
-            theta.set_coordinate(i, thetaPrev.get_coordinate(i) - change);
-            // check if theta is outside the bounds
-            if ( (theta.get_coordinate(i)<inf_limits[i]) ||
-                (theta.get_coordinate(i)>sup_limits[i]))
-                // nudge it back in by using the average of the gradient
-                // rationale is that if we ended out of bounds there is some sort of a local
-                // minimum
-                theta.set_coordinate(i, thetaPrev.get_coordinate(i) + mHat);
-
+            vt[i] = gamma1 * vt[i] + (1-gamma2) * pow(gt, 2);
+            double mHat = mt[i] / (1-pow(gamma1,t+1));
+            double vHat = vt[i] / (1-pow(gamma2, t+1));
+            const double change = alpha * mHat / (sqrt(vHat) + epsilon);
+            // update ith component of theta
+            theta.set_coordinate(i, theta.get_coordinate(i) - change);
+            // check boundaries and clip
+            if (theta.get_coordinate(i) < inf_limits[i])
+                theta.set_coordinate(i, inf_limits[i]);
+            if (theta.get_coordinate(i) > sup_limits[i])
+                theta.set_coordinate(i, sup_limits[i]);
         }
-        // evaluate convergence
-        thetaDistance = theta.distance(thetaPrev);
-        thetaDistanceSignificant = (thetaDistance > tolerance);
-        // simple abs cast to int
-        fDistance = std::abs(evaluate_batch(theta, batch) - evaluate_batch(thetaPrev, batch));
-        fDistanceSignificant = ( fDistance > tolerance);
-        maxIterationsUnreached = (t<max_iterations);
+        // evaluate f at the two points
+        const double fValue = evaluate_batch(theta, batch);
+        const double fPrevValue = evaluate_batch(thetaPrev, batch);
 
+        converged = (std::abs(fValue - fPrevValue) < tolerance) || // change in f
+            (theta.distance(thetaPrev) < tolerance); // change in theta
     }
-    while (thetaDistanceSignificant && fDistanceSignificant && maxIterationsUnreached);
 
     return theta;
 }
