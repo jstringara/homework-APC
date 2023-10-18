@@ -1,0 +1,18 @@
+# ninja log v5
+527	601	1696270025991665073	Assignment1_initial	7818df742d473bef
+0	76	7190809206404036	build.ninja	3a8fb3032390b0b0
+20	830	7190822670178496	CMakeFiles/Assignment1_initial.dir/FunctionRn.cpp.obj	43527246079491d5
+4	840	7190822670328348	CMakeFiles/Assignment1_initial.dir/Point.cpp.obj	324d8e7bcfb35461
+8	787	7190822669814185	CMakeFiles/Assignment1_initial.dir/Monomial.cpp.obj	d49cafe50699891b
+3	624	7191898021389978	CMakeFiles/Assignment1_initial.dir/main.cpp.obj	1e530f1a50564960
+3	757	7192343284745057	CMakeFiles/Assignment1_initial.dir/Adam.cpp.obj	4c4e5cbcdbbed910
+757	962	7192343286746848	Assignment1_initial.exe	3a35a39370a1244f
+4	587	7192343477931589	CMakeFiles/Assignment1_initial.dir/Adam.cpp.obj	4c4e5cbcdbbed910
+587	745	7192343479482126	Assignment1_initial.exe	3a35a39370a1244f
+12	782	7192344612262788	CMakeFiles/Assignment1_initial.dir/Adam.cpp.obj	4c4e5cbcdbbed910
+3	867	7192344613113736	CMakeFiles/Assignment1_initial.dir/main.cpp.obj	1e530f1a50564960
+867	1062	7192344615037923	Assignment1_initial.exe	3a35a39370a1244f
+3	1377	7192409536652958	CMakeFiles/Assignment1_initial.dir/Adam.cpp.obj	4c4e5cbcdbbed910
+1378	1751	7192409540351364	Assignment1_initial.exe	3a35a39370a1244f
+3	762	7192409776943286	CMakeFiles/Assignment1_initial.dir/main.cpp.obj	1e530f1a50564960
+762	955	7192409778835459	Assignment1_initial.exe	3a35a39370a1244f

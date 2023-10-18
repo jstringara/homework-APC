@@ -1,0 +1,3 @@
+C:/Users/jacop/Uni Drive/Ing Matematica-2.0/ALGORITHMS AND PARALLEL COMPUTING/Assignments/Assignments2023/Assignment1/10687726/cmake-build-debug/CMakeFiles/Assignment1_initial.dir
+C:/Users/jacop/Uni Drive/Ing Matematica-2.0/ALGORITHMS AND PARALLEL COMPUTING/Assignments/Assignments2023/Assignment1/10687726/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/jacop/Uni Drive/Ing Matematica-2.0/ALGORITHMS AND PARALLEL COMPUTING/Assignments/Assignments2023/Assignment1/10687726/cmake-build-debug/CMakeFiles/rebuild_cache.dir
