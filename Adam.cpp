@@ -145,26 +145,28 @@ const std::vector<double> & Adam::get_sup_limits() const {
 Point Adam::solve(const Point &initial_parameters) {
 
     Point theta(initial_parameters.get_coordinates());
-    bool converged = false; // this might need better initialization
+    bool converged = false; // we need to run the first iteration
     // initialize moments as zeros
-    std::vector<double> mt(theta.get_dimension(), 0), vt(theta.get_dimension(), 0);
+    std::vector<double> mt(theta.get_dimension(), 0);
+    std::vector<double> vt(theta.get_dimension(), 0);
 
     for (size_t t=0; t < max_iterations && !converged; t++) { // loop of iterations
         // save old theta to compute distance later
         Point thetaPrev(theta.get_coordinates());
         // extract the batch
         std::vector<int> batch = create_batch();
-        for (size_t i=0; i<theta.get_dimension(); i++) { // loop of components of theta
-            // update the gradient components and moments
+        // loop on components of theta
+        for (size_t i=0; i<theta.get_dimension(); i++) {
+            // update the moments components
             const double gt = evaluate_partial_derivative_batch(i, theta, batch);
             mt[i] = gamma1 * mt[i] + (1-gamma1) * gt;
             vt[i] = gamma1 * vt[i] + (1-gamma2) * pow(gt, 2);
-            double mHat = mt[i] / (1-pow(gamma1,t+1));
-            double vHat = vt[i] / (1-pow(gamma2, t+1));
+            const double mHat = mt[i] / (1-pow(gamma1,t+1)); // t+1 since the loop should start with 1
+            const double vHat = vt[i] / (1-pow(gamma2, t+1));
             const double change = alpha * mHat / (sqrt(vHat) + epsilon);
             // update ith component of theta
             theta.set_coordinate(i, theta.get_coordinate(i) - change);
-            // check boundaries and clip
+            // check boundaries and reset to limits if necessary
             if (theta.get_coordinate(i) < inf_limits[i])
                 theta.set_coordinate(i, inf_limits[i]);
             if (theta.get_coordinate(i) > sup_limits[i])
