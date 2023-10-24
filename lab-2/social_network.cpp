@@ -4,6 +4,7 @@
 
 /// STD include
 #include <iostream>
+#include <algorithm>
 
 namespace SocialNetworkNS
 {
@@ -36,7 +37,8 @@ namespace SocialNetworkNS
             users.push_back(User(name, surname));
             // add an empty vector as the list of friends
             friends.push_back(std::vector<size_t>{});
-        }
+        } else
+            std::cout << "User already present!" << std::endl;
     }
 
     const std::vector<User> SocialNetwork::CGetUsers() const
@@ -59,8 +61,10 @@ namespace SocialNetworkNS
         const size_t userIndex = CUserIndex(name, surname);
 
         // if it does not exist, return empty vector
-        if (userIndex == users.size())
+        if (userIndex == users.size()){
+            std::cout << "User is not present in network!" << std::endl;
             return ret; // how to throw an actual error???
+        }
 
         // loop over the friends (should be size_t but use auto)
         // use range for -> if empty -> no problem
@@ -84,8 +88,10 @@ namespace SocialNetworkNS
         const size_t secondIndex = CUserIndex(second_name, second_surname);
 
         // if either does not exist stop
-        if ((firstIndex == users.size()) || (secondIndex == users.size()))
+        if ((firstIndex == users.size()) || (secondIndex == users.size())){
+            std::cout << "One of the users does not exist!" << std::endl;
             return;
+        }
 
         // add second to first's list of friends
         // make sure not already present
@@ -94,11 +100,15 @@ namespace SocialNetworkNS
             friends[firstIndex].end(),
             secondIndex) == friends[firstIndex].end())
             friends[firstIndex].push_back(secondIndex); // add to the list
+        else {
+            std::cout << "Friendship already present:" << users[firstIndex].ToString() << " and " <<
+                users[secondIndex].ToString() << " are already friends!" << std::endl;
+        }
         // add first to second's list of friends
         if (std::find(
-            friends[secondIndex].begin(),
-            friends[secondIndex].end(),
-            firstIndex) == friends[secondIndex].end())
+        friends[secondIndex].begin(),
+        friends[secondIndex].end(),
+        firstIndex) == friends[secondIndex].end())
             friends[secondIndex].push_back(firstIndex);
     }
 }
