@@ -3,8 +3,8 @@
 
 namespace SocialNetworkNS
 {
-    User::User(const std::string &_name, const std::string &_surname) : name(_name),
-                                                                        surname(_surname) {}
+    User::User(const std::string &_name, const std::string &_surname) :
+        name(_name), surname(_surname) {}
 
     const std::string &User::CGetName() const
     {
@@ -23,9 +23,9 @@ namespace SocialNetworkNS
 
     bool operator==(const User &lhs, const User &rhs)
     {
-        /* YOUR CODE GOES HERE */
-
-        return true;
+        // same if they have same name and surname
+        // must use getters since we are outside of object scope
+        return ((lhs.CGetName() == rhs.CGetName()) &&
+            (lhs.CGetSurname() == rhs.CGetSurname()));
     }
-
 }

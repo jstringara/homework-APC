@@ -7,8 +7,8 @@
 
 namespace SocialNetworkNS
 {
-    size_t SocialNetwork::CUserIndex(const std::string &name,
-                                     const std::string &surname) const
+    size_t SocialNetwork::CUserIndex(
+        const std::string &name, const std::string &surname) const
     {
         size_t i;
 
@@ -26,11 +26,17 @@ namespace SocialNetworkNS
             return users.size();
     }
 
-    void SocialNetwork::AddUser(const std::string &name,
-                                const std::string &surname)
+    void SocialNetwork::AddUser(
+        const std::string &name, const std::string &surname)
     {
-
-        /* YOUR CODE GOES HERE */
+        // check for existence, if max then proceed
+        if (CUserIndex(name, surname) == users.size())
+        {
+            // add to the list of users
+            users.push_back(User(name, surname));
+            // add an empty vector as the list of friends
+            friends.push_back(std::vector<size_t>{});
+        }
     }
 
     const std::vector<User> SocialNetwork::CGetUsers() const
@@ -40,27 +46,59 @@ namespace SocialNetworkNS
 
     const std::vector<User> SocialNetwork::CGetFriends(const User &user) const
     {
-
-        /* YOUR CODE GOES HERE */
+        // call the same method but passing directly the name and surname
+        return CGetFriends(user.CGetName(), user.CGetSurname());
     }
 
-    const std::vector<User> SocialNetwork::CGetFriends(const std::string &name,
-                                                       const std::string &surname) const
+    const std::vector<User> SocialNetwork::CGetFriends(
+        const std::string &name, const std::string &surname) const
     {
         std::vector<User> ret{};
 
-        /* YOUR CODE GOES HERE */
+        // get the user index
+        const size_t userIndex = CUserIndex(name, surname);
+
+        // if it does not exist, return empty vector
+        if (userIndex == users.size())
+            return ret; // how to throw an actual error???
+
+        // loop over the friends (should be size_t but use auto)
+        // use range for -> if empty -> no problem
+        for (size_t friendIndex: friends[userIndex])
+        {
+            ret.push_back(users[friendIndex]);
+        }
 
         return ret;
     }
 
-    void SocialNetwork::AddFriendship(const std::string &first_name,
-                                      const std::string &first_surname,
-                                      const std::string &second_name,
-                                      const std::string &second_surname)
+    void SocialNetwork::AddFriendship(
+        const std::string &first_name,
+        const std::string &first_surname,
+        const std::string &second_name,
+        const std::string &second_surname)
     {
 
-        /* YOUR CODE GOES HERE */
-    }
+        // get the user indexes
+        const size_t firstIndex = CUserIndex(first_name, first_surname);
+        const size_t secondIndex = CUserIndex(second_name, second_surname);
 
+        // if either does not exist stop
+        if ((firstIndex == users.size()) || (secondIndex == users.size()))
+            return;
+
+        // add second to first's list of friends
+        // make sure not already present
+        if (std::find(
+            friends[firstIndex].begin(),
+            friends[firstIndex].end(),
+            secondIndex) == friends[firstIndex].end())
+            friends[firstIndex].push_back(secondIndex); // add to the list
+        // add first to second's list of friends
+        if (std::find(
+            friends[secondIndex].begin(),
+            friends[secondIndex].end(),
+            firstIndex) == friends[secondIndex].end())
+            friends[secondIndex].push_back(firstIndex);
+    }
 }
