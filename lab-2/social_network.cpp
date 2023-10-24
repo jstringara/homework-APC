@@ -66,7 +66,8 @@ namespace SocialNetworkNS
             return ret; // how to throw an actual error???
         }
 
-        // loop over the friends (should be size_t but use auto)
+        // loop over the friends (should be size_t but use auto) 
+        // retrieve corresponding user object
         // use range for -> if empty -> no problem
         for (size_t friendIndex: friends[userIndex])
         {
