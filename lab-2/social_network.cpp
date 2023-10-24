@@ -93,6 +93,12 @@ namespace SocialNetworkNS
             return;
         }
 
+        // if it's the same person, stop
+        if (firstIndex == secondIndex){
+            std::cout << "Someone can't be friends with themselves!" << std::endl;
+            return;
+        }
+
         // add second to first's list of friends
         // make sure not already present
         if (std::find(
