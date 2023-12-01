@@ -16,6 +16,9 @@
 class layer {
 private:
     // Your code goes here
+    std::vector<neuron> neurons;
+    size_t input_size;
+    size_t output_size;
 public:
 
     layer(size_t input_size, size_t output_size, const ptr_act_function & p_a_f);

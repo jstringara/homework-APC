@@ -5,3 +5,7 @@
 #include "tanh_af.h"
 
 // Your code goes here
+
+double tanh_af::eval(const double x) const {
+  return std::tanh(x);
+}

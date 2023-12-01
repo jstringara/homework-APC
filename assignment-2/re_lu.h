@@ -9,6 +9,10 @@
 
 
 // Your code goes here
+class re_lu: public activation_function {
+  public:
+    double eval(const double x) const;
+};
 
 
 #endif //NEURALNETWORKS_RE_LU_H

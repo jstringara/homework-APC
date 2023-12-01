@@ -14,6 +14,7 @@ class nn_model {
 
 private:
     // Your code goes here
+    std::vector<layer> layers;
 public:
     la::dense_matrix predict(const la::dense_matrix & input_vector) const;
     void add_layer(const layer & l);

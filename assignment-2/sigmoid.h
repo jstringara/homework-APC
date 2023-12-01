@@ -8,7 +8,10 @@
 
 
 // Your code goes here
-
+class sigmoid: public activation_function {
+public:
+  double eval(const double x) const;
+};
 
 
 #endif //NEURALNETWORKS_SIGMOID_H

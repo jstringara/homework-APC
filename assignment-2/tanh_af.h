@@ -8,7 +8,10 @@
 
 
 // Your code goes here
-
+class tanh_af: public activation_function {
+public:
+  double eval(const double x) const;
+};
 
 
 #endif //NEURALNETWORKS_TANH_AF_H
