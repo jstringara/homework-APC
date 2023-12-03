@@ -8,10 +8,12 @@
 
 
 // Your code goes here
-class tanh_af: public activation_function {
-public:
-  double eval(const double x) const;
+class tanh_af : public activation_function{
+    public:
+        // override the pure virtual method
+        double eval(const double x) const override;
 };
+
 
 
 #endif //NEURALNETWORKS_TANH_AF_H

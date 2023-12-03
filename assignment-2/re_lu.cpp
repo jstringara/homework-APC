@@ -6,8 +6,6 @@
 
 
 // Your code goes here
-
 double re_lu::eval(const double x) const {
-  // this perforrms the same operation as max
-  return x>0 ? x : 0;
+    return (x > 0.0) ? x : 0;
 }
