@@ -3,7 +3,6 @@
 //
 
 #include "neuron.h"
-#include <cmath>
 
 neuron::neuron(size_t input_size, const ptr_act_function & p_a_f) {
     p_act_func = p_a_f;
@@ -14,20 +13,14 @@ neuron::neuron(size_t input_size, const ptr_act_function & p_a_f) {
 double neuron::eval(const la::dense_matrix & input_vect) const{
 
     // Your code goes here
-    // check that input size and weights size match
-    // due to the constructor w is alway a column vector
-    if (input_vect.columns()==1 && input_vect.rows() == weights.rows()) // input is a col
-        // sum is input^T * w
+    // weights vector is a col vector by definition of constructor
+
+    if (input_vect.columns()==1 && input_vect.rows() == weights.rows()) // input is a col -> transpose
+        // we can access directly the data since it is only one number, equivalent to doing sum(0,0)
         return p_act_func->eval(
             *(input_vect.transposed() * weights).data() + bias
         );
-    if (input_vect.rows()==1 && input_vect.columns() == weights.rows()) // input is a row
-        // sum is input * w
-        return p_act_func->eval(
-            *(input_vect.transposed() *weights).data() + bias
-        );
-
-    // all else has failed, print error and return NaN
-    std::cerr << "Wrong input dimensions" << std::endl;
-    return nan("");
+    // all else has failed, wrong dimensions, error and return NaN
+    std::cerr <<  "Wrong Input dimensions" << std::endl;
+    return std::nan("");
 }
