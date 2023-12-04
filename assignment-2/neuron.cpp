@@ -14,7 +14,6 @@ double neuron::eval(const la::dense_matrix & input_vect) const{
 
     // Your code goes here
     // weights vector is a col vector by definition of constructor
-
     if (input_vect.columns()==1 && input_vect.rows() == weights.rows()) // input is a col -> transpose
         // we can access directly the data since it is only one number, equivalent to doing sum(0,0)
         return p_act_func->eval(

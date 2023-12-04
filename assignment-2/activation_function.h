@@ -13,4 +13,5 @@ class activation_function {
         virtual double eval(const double x) const = 0;
 };
 
+
 #endif //NEURALNETWORKS_ACTIVATION_FUNCTION_H

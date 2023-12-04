@@ -15,4 +15,5 @@ class re_lu : public activation_function{
         double eval(const double x) const override;
 };
 
+
 #endif //NEURALNETWORKS_RE_LU_H
