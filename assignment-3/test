@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Compile the main file
+mpicxx -std=c++11 -Wall *.cpp -o main
+
+# Function to run a test
+run_test() {
+    local test_number=$1
+    local log_file="./test${test_number}_output.log"
+    local temp_diff_file="./temp_diff_output.txt"
+
+    # Run the program on the specified test, redirecting stderr to a log file
+    mpiexec -np 2 ./main "./tests/test${test_number}/A.txt" vertical > $log_file 2>&1
+
+    # Check if the test was passed
+    if diff "./tests/test${test_number}/diff_f_0.csv" "./diff_f_0.csv" > /dev/null &&
+        diff "./tests/test${test_number}/diff_f_1.csv" "./diff_f_1.csv" > /dev/null; then
+        echo "Test ${test_number} passed ✔"
+    else
+        echo "Test ${test_number} failed ✘"
+    fi
+}
+
+# Run tests 1 to 4
+for test_number in $(seq 1 4); do
+    run_test $test_number
+done
+
