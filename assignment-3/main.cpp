@@ -5,7 +5,9 @@
 #include <cmath>
 #include <mpi.h>
 
+#include "matrix_split.hpp"
 #include "matrix_diff.hpp"
+#include "matrix_assemble.hpp"
 
 
 using dense_matrix = la::dense_matrix;
@@ -32,24 +34,25 @@ int main(int argc, char* argv[])
   }
 
   // compute diff
+  dense_matrix matrix_diff;
   if (direction == "vertical")
   {
     // split matrix
-    dense_matrix local_A = split_cols(A);
+    dense_matrix local_A = la::split_cols(A);
     // compute local diff
-    dense_matrix local_diff = vertical_diff(local_A);
+    dense_matrix local_diff = la::vertical_diff(local_A);
     // assemble matrix columns
-    dense_matrix matrix_diff = assemble_cols(local_diff);
-
-    // print
-    std::string diff_filename = "diff_f_" + std::to_string(rank) + ".csv";
-    std::ofstream ofs1(diff_filename);
-    matrix_diff.to_csv(ofs1);
+    matrix_diff = la::assemble_cols(local_diff);
   }
   else
   {
     std::cerr << "ERROR: no implementation provided" << std::endl;
   }
+
+  // print
+  std::string diff_filename = "diff_f_" + std::to_string(rank) + ".csv";
+  std::ofstream ofs1(diff_filename);
+  matrix_diff.to_csv(ofs1);
 
   MPI_Finalize();
 

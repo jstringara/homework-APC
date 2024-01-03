@@ -19,7 +19,7 @@ namespace la // Linear Algebra
     typedef container_type::const_reference const_reference;
 
   private:
-    size_type m_rows, m_columns;
+    size_type m_rows = 0, m_columns = 0;
     container_type m_data;
 
     size_type
